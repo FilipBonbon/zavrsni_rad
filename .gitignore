@@ -59,3 +59,5 @@ replay_pid*
 *.exe
 *.out
 *.app
+
+C++/cmake-build-debug
