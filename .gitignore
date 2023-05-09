@@ -60,6 +60,6 @@ replay_pid*
 *.out
 *.app
 
-C++/cmake-build-debug
-C++/.idea
-Java/.idea
+C++/cmake-build-debug/
+C++/.idea/
+Java/.idea/
