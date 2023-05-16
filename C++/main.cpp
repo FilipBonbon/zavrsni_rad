@@ -1,15 +1,18 @@
-#include "include/data.hpp"
+#include <list>
+
+#include "include/strategy/Fitness.hpp"
+#include "include/strategy/fitness/Overlap.hpp"
+#include "include/ScheduleSolver.hpp"
 
 using namespace std;
 
 int main() {
-    auto jmbags = Data::loadJmbags();
-    auto ocupations = Data::loadOcupations();
-    auto appointments = Data::loadAppointments();
+    list<Fitness *> fitnessFunctions;
+    fitnessFunctions.push_back(new Overlap());
+    fitnessFunctions.push_back(new Overlap());
 
-    Data::printJmbags(jmbags);
-    Data::printOcupations(ocupations);
-    Data::printAppointments(appointments);
+    ScheduleSolver model(fitnessFunctions);
+    model.solve();
 
     return 0;
 }

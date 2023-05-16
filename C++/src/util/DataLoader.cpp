@@ -2,14 +2,14 @@
 // Created by Filip on 9.5.2023..
 //
 
-#include "../include/data.hpp"
+#include "../../include/util/DataLoader.hpp"
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 
 using namespace std;
 
-unordered_set<long> Data::loadJmbags() {
+unordered_set<long> DataLoader::loadJmbags() {
     ifstream file("../resources/jmbags.txt");
     string jmbag;
 
@@ -22,28 +22,28 @@ unordered_set<long> Data::loadJmbags() {
     return jmbags;
 }
 
-unordered_map<long, vector<string>> Data::loadOcupations() {
+unordered_map<long, vector<string>> DataLoader::loadOccupations() {
     ifstream file("../resources/zauzetost.csv");
     string input;
 
-    unordered_map<long, vector<string>> ocupations;
+    unordered_map<long, vector<string>> occupations;
     while (getline(file, input, ';')) {
         auto jmbag = strtol(input.c_str(), nullptr, 10);
 
         getline(file, input);
         auto datetime = input;
 
-        if (!ocupations.contains(jmbag)) {
-            ocupations.emplace(jmbag, vector<string>());
+        if (!occupations.contains(jmbag)) {
+            occupations.emplace(jmbag, vector<string>());
         }
-        ocupations.at(jmbag).emplace_back(datetime);
+        occupations.at(jmbag).emplace_back(datetime);
     }
 
     file.close();
-    return ocupations;
+    return occupations;
 }
 
-vector<string> Data::loadAppointments() {
+vector<string> DataLoader::loadAppointments() {
     ifstream file("../resources/termini.txt");
     string line;
 
@@ -57,14 +57,14 @@ vector<string> Data::loadAppointments() {
     return appointments;
 }
 
-void Data::printJmbags(unordered_set<long> &jmbags) {
+void DataLoader::printJmbags(unordered_set<long> &jmbags) {
     for (const auto &item: jmbags) {
         cout << item << endl;
     }
 }
 
-void Data::printOcupations(unordered_map<long, vector<string>> &ocupations) {
-    for (const auto &item: ocupations) {
+void DataLoader::printOccupations(unordered_map<long, vector<string>> &occupations) {
+    for (const auto &item: occupations) {
         cout << item.first << endl;
         for (const auto &innerItem: item.second) {
             cout << "\t" << innerItem << endl;
@@ -72,7 +72,7 @@ void Data::printOcupations(unordered_map<long, vector<string>> &ocupations) {
     }
 }
 
-void Data::printAppointments(vector<string> &appointments) {
+void DataLoader::printAppointments(vector<string> &appointments) {
     for (const auto &item: appointments) {
         cout << item << endl;
     }
