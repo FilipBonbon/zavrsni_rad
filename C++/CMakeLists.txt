@@ -4,4 +4,4 @@ project(zavrsni_rad)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(zavrsni_rad main.cpp src/util/DataLoader.cpp src/ScheduleSolver.cpp
-        include/strategy/Fitness.hpp src/strategy/fitness/Overlap.cpp)
+        include/strategy/Fitness.hpp src/strategy/fitness/Capacity.cpp include/strategy/ParentSelection.hpp src/strategy/parents/Proportion.cpp include/strategy/parents/Proportion.hpp)

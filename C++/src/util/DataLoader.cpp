@@ -1,21 +1,16 @@
-//
-// Created by Filip on 9.5.2023..
-//
-
 #include "../../include/util/DataLoader.hpp"
-#include <iostream>
 #include <fstream>
 #include <cstdlib>
 
 using namespace std;
 
-unordered_set<long> DataLoader::loadJmbags() {
+vector<long> DataLoader::loadJmbags() {
     ifstream file("../resources/jmbags.txt");
     string jmbag;
 
-    unordered_set<long> jmbags;
+    vector<long> jmbags;
     while (file >> jmbag) {
-        jmbags.emplace(strtol(jmbag.c_str(), nullptr, 10));
+        jmbags.push_back(strtol(jmbag.c_str(), nullptr, 10));
     }
 
     file.close();
@@ -49,15 +44,16 @@ vector<string> DataLoader::loadAppointments() {
 
     vector<string> appointments;
     while (file >> line) {
-        if (!line.starts_with('#') || line == "\n")
-            appointments.emplace_back(line);
+        if (!line.starts_with('#') || line == "\n") {
+            appointments.push_back(line);
+        }
     }
 
     file.close();
     return appointments;
 }
 
-void DataLoader::printJmbags(unordered_set<long> &jmbags) {
+/*void DataLoader::printJmbags(unordered_set<long> &jmbags) {
     for (const auto &item: jmbags) {
         cout << item << endl;
     }
@@ -76,4 +72,4 @@ void DataLoader::printAppointments(vector<string> &appointments) {
     for (const auto &item: appointments) {
         cout << item << endl;
     }
-}
+}*/

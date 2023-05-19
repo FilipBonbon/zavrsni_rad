@@ -1,55 +1,57 @@
 #ifndef ZAVRSNI_RAD_SCHEDULESOLVER_HPP
 #define ZAVRSNI_RAD_SCHEDULESOLVER_HPP
 
-#include "strategy/Fitness.hpp"
+#include "../include/strategy/ParentSelection.hpp"
 
-#include <iostream>
-#include <unordered_set>
 #include <unordered_map>
 #include <list>
 #include <vector>
+#include <string>
 
-using namespace std;
+class Fitness;
 
 class ScheduleSolver {
-private: // Consts
-    static const int NUM_OF_UNITS = 256;
+public: // Consts
+    static const int NUM_OF_UNITS = 64;
 
-private: // Data
-    unordered_set<long> jmbags;
-    unordered_map<long, vector<string>> occupations;
-    vector<string> appointments;
-
-private: // Strategies
-    list<Fitness *> fitnessFunctions;
-    void* crossStrategy;
-    void* selectParentStrategy;
-    void* mutationStrategy;
-
-private: // Util variables
-    int numberOfStudents;
-    int numberOfAppointments;
+public: // Data
+    long *jmbags = nullptr;
+    std::string *appointments = nullptr; // TODO: possibly remove
+    std::unordered_map<long, std::vector<std::string>> occupations; // TODO: possibly shoten
+    int numberOfStudents = 0;
+    int numberOfAppointments = 0;
     int **population;
+    double *fitnesses;
+
+public: // Strategies
+    std::list<Fitness *> fitnessFunctions;
+    ParentSelection* parentSelection;
+    void* crossStrategy{};
+    void* mutationStrategy{};
 
 public:
-    explicit ScheduleSolver(list<Fitness *>);
+    explicit ScheduleSolver(std::list<Fitness *>, ParentSelection *);
 
     ~ScheduleSolver();
 
 private:
-    void generateRandomPopulations() const;
+    void loadJmbags();
+
+    void loadAppointments();
 
 public:
-    void solve() const;
+    void train();
 
 private:
-    double calculateFitness() const;
+    void generateRandomPopulations();
 
-    void cross() const;
+    double calculateFitness(int);
 
-    void mutate() const;
+    void cross();
 
-    int chooseParent() const;
+    void mutate();
+
+    int chooseParent();
 };
 
 #endif
