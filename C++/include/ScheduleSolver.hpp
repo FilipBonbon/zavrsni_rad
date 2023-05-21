@@ -12,7 +12,7 @@
 class ScheduleSolver {
 private: // Consts
     const int NUM_OF_UNITS;
-    const double MUTATION;
+    double MUTATION;
 
 private: // Data
     long long *jmbags;

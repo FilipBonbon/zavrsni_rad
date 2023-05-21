@@ -119,13 +119,13 @@ void ScheduleSolver::loadAppointments() {
 
         assignNewPopulation(newPopulation, newPenalties, newCollisions);
 
-        if (iteration % 10 == 0) {
+        if (iteration % 25 == 0) {
             auto eliteIndex = getEliteUnit();
             cout << "Iteration " << iteration << " with best unit with " << collisions[eliteIndex]
                  << " collisions and penlaty: " << penalties[eliteIndex] << "\n";
         }
 
-        if (iteration % 100 == 0) {
+        if (iteration % 150 == 0) {
             cout << "saving schedules...:\n";
             printSchedule();
             printScheduleRich();
@@ -182,7 +182,7 @@ tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
         int numAssigned = capacity[i];
 
         if (numAssigned > 16) {
-            pentaly += 50 * pow((numAssigned - 16), 2);
+            pentaly += 120 * pow((numAssigned - 16), 2);
         } else if (numAssigned < 15) {
             pentaly += 35 * pow((15 - numAssigned), 2);
         }
@@ -205,7 +205,7 @@ tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
         }
     }
 
-    pentaly += 75 * collNum;
+    pentaly += 200 * collNum;
 
 
     delete[] capacity;
@@ -247,9 +247,8 @@ void ScheduleSolver::printSchedule() {
             file << "\n";
         }
         file.close();
-        std::cout << "File written successfully.\n";
     } else {
-        std::cout << "Failed to open the file.\n";
+        std::cout << "Failed to open raspored.txt.\n";
     }
 }
 
@@ -280,8 +279,7 @@ void ScheduleSolver::printScheduleRich() {
             file << "\n\n";
         }
         file.close();
-        std::cout << "File written successfully.\n";
     } else {
-        std::cout << "Failed to open the file.\n";
+        std::cout << "Failed to open raspored_preklapanja.txt.\n";
     }
 }

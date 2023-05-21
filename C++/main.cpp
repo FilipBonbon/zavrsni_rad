@@ -16,7 +16,7 @@ int main() {
     UnitCrossing *unitCrossing = new RandomCross();
 
     // parameters
-    int numOfUnits = 25;
+    int numOfUnits = 30;
     double mutation = 0.01;
 
     set<int> a;
