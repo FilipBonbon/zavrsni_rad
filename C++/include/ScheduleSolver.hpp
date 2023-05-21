@@ -11,7 +11,8 @@
 
 class ScheduleSolver {
 private: // Consts
-    static const int NUM_OF_UNITS = 250;
+    const int NUM_OF_UNITS;
+    const double MUTATION;
 
 private: // Data
     long long *jmbags;
@@ -20,8 +21,8 @@ private: // Data
     int *appointmentsFrom;
     int *appointmentsTo;
     std::unordered_map<long long, std::unordered_map<std::string, std::vector<std::tuple<int, int>>>> occupations;
-    int numberOfStudents = 0;
-    int numberOfAppointments = 0;
+    int numberOfStudents;
+    int numberOfAppointments;
     int **population;
     double *penalties;
     int *collisions;
@@ -31,7 +32,7 @@ private: // Strategies
     UnitCrossing *unitCrossing;
 
 public:
-    explicit ScheduleSolver(ParentSelection *, UnitCrossing *);
+    explicit ScheduleSolver(ParentSelection *, UnitCrossing *, int, double);
 
     ~ScheduleSolver();
 
@@ -41,22 +42,22 @@ private:
     void loadAppointments();
 
 public:
-    void train();
+    [[noreturn]] void train();
 
 private:
     void generateRandomPopulations();
 
     int getEliteUnit() const;
 
-    void assignNewPopulation(int **, double *);
+    void assignNewPopulation(int **, double *, int *);
 
-    double calculatePenalties(int *);
-
-    int calculateCollisions(int *);
+    std::tuple<double, int> calculatePenalties(int *);
 
     void mutate(int *) const;
 
     void printSchedule();
+
+    void printScheduleRich();
 };
 
 #endif

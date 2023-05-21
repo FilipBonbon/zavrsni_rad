@@ -1,5 +1,8 @@
-#include "../../include/util/DataLoader.hpp"
 #include <fstream>
+#include <sstream>
+
+#include "../../include/util/DataLoader.hpp"
+
 using namespace std;
 
 vector<long long> DataLoader::loadJmbags() {
@@ -27,7 +30,22 @@ unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> DataLoa
         }
 
         getline(file, token, ';'); // date
-        auto date = token;
+        auto dateOld = token;
+
+        stringstream ss(dateOld);
+        string day;
+        getline(ss, day, '.');
+        string month;
+        getline(ss, month, '.');
+        string year;
+        getline(ss, year);
+
+        string date;
+        date += year;
+        date += '-';
+        date += month;
+        date += '-';
+        date += day;
         if (!occupations[jmbag].contains(date)) {
             occupations[jmbag].emplace(date, vector<tuple<int, int>>());
         }
@@ -36,7 +54,7 @@ unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> DataLoa
         token.erase(remove(token.begin(), token.end(), ':'), token.end());
         auto from = stoi(token);
 
-        getline(file, token, ';'); // to
+        getline(file, token); // to
         token.erase(remove(token.begin(), token.end(), ':'), token.end());
         auto to = stoi(token);
 
@@ -61,24 +79,3 @@ vector<string> DataLoader::loadAppointments() {
     file.close();
     return appointments;
 }
-
-/*void DataLoader::printJmbags(unordered_set<long> &jmbags) {
-    for (const auto &item: jmbags) {
-        cout << item << endl;
-    }
-}
-
-void DataLoader::printOccupations(unordered_map<long, vector<string>> &occupations) {
-    for (const auto &item: occupations) {
-        cout << item.first << endl;
-        for (const auto &innerItem: item.second) {
-            cout << "\t" << innerItem << endl;
-        }
-    }
-}
-
-void DataLoader::printAppointments(vector<string> &appointments) {
-    for (const auto &item: appointments) {
-        cout << item << endl;
-    }
-}*/
