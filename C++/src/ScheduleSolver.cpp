@@ -1,56 +1,58 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <random>
-#include <utility>
 #include <chrono>
 
 #include "../include/util/DataLoader.hpp"
 #include "../include/ScheduleSolver.hpp"
-#include "../include/strategy/Fitness.hpp"
 
 using namespace std;
 
-ScheduleSolver::ScheduleSolver(list<Fitness *> fitnessFunctions, ParentSelection* parentSelection) {
-    // strategies
-    this->fitnessFunctions = std::move(fitnessFunctions);
-    this->parentSelection = parentSelection;
+ScheduleSolver::ScheduleSolver(ParentSelection *parentSelection, UnitCrossing *unitCrossing) {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    // data
+    // strategies
+    this->parentSelection = parentSelection;
+    this->unitCrossing = unitCrossing;
+
+    // data TODO: improve this part
     this->loadJmbags();
     this->loadAppointments();
-    this->occupations = DataLoader::loadOccupations();
+    this->occupations = DataLoader::loadOccupations(); // sacu
 
     this->population = new int *[NUM_OF_UNITS];
     for (int i = 0; i < NUM_OF_UNITS; i++) {
         this->population[i] = new int[numberOfStudents];
     }
-    this->fitnesses = new double[NUM_OF_UNITS];
+    this->penalties = new double[NUM_OF_UNITS];
+    this->collisions = new int[NUM_OF_UNITS];
 
-    generateRandomPopulations();
+    this->generateRandomPopulations();
 }
 
 ScheduleSolver::~ScheduleSolver() {
-    delete jmbags;
-    delete appointments;
+    delete[] jmbags;
+    delete[] appointments;
+    delete[] appointmentsDate;
+    delete[] appointmentsFrom;
+    delete[] appointmentsTo;
 
     for (int i = 0; i < NUM_OF_UNITS; i++) {
-        delete population[i];
+        delete[] population[i];
     }
-    delete population;
-    delete fitnesses;
+    delete[] population;
+    delete[] penalties;
+    delete[] collisions;
 
-    for (auto &item: fitnessFunctions) {
-        delete item;
-    }
     delete parentSelection;
-    // TODO: after adding uncomment
-    /*delete crossStrategy;
-    delete mutationStrategy;*/
+    delete unitCrossing;
 }
 
 void ScheduleSolver::loadJmbags() {
     auto jmbag_vector = DataLoader::loadJmbags();
     this->numberOfStudents = (int) jmbag_vector.size();
-    this->jmbags = new long[numberOfStudents];
+    this->jmbags = new long long[numberOfStudents];
     for (int i = 0; i < numberOfStudents; ++i) {
         jmbags[i] = jmbag_vector[i];
     }
@@ -60,41 +62,74 @@ void ScheduleSolver::loadAppointments() {
     auto appointment_vector = DataLoader::loadAppointments();
     this->numberOfAppointments = (int) appointment_vector.size();
     this->appointments = new string[numberOfAppointments];
+    this->appointmentsDate = new string[numberOfAppointments];
+    this->appointmentsFrom = new int[numberOfAppointments];
+    this->appointmentsTo = new int[numberOfAppointments];
+
+    string token;
     for (int i = 0; i < numberOfAppointments; ++i) {
-        appointments[i] = appointment_vector[i];
+        string appointment = appointment_vector[i];
+        stringstream ss(appointment);
+        appointments[i] = appointment;
+
+        getline(ss, token, ';'); // name
+        getline(ss, token, ';'); // capacity
+        getline(ss, token, ';'); // date
+        appointmentsDate[i] = token;
+
+        getline(ss, token, ';'); // from
+        token.erase(remove(token.begin(), token.end(), ':'), token.end());
+        appointmentsFrom[i] = stoi(token);
+
+        getline(ss, token, ';'); // to
+        token.erase(remove(token.begin(), token.end(), ':'), token.end());
+        appointmentsTo[i] = stoi(token);
     }
 }
 
 void ScheduleSolver::train() {
-    auto startTime = std::chrono::high_resolution_clock::now();
-
-    int NUM_OF_ITERATIONS = 100;
+    int NUM_OF_ITERATIONS = 100000;
 
     int iteration = 0;
     do {
-        int **newPopulation = new int *[NUM_OF_UNITS];
-        for (int i = 0; i < NUM_OF_UNITS; i++) {
+        auto **newPopulation = new int *[NUM_OF_UNITS];
+        auto *newPenalties = new double[NUM_OF_UNITS];
+
+        // elitizm
+        newPopulation[0] = new int[numberOfStudents];
+        auto eliteUnitIndex = getEliteUnit();
+        for (int i = 0; i < numberOfStudents; ++i) {
+            newPopulation[0][i] = population[eliteUnitIndex][i];
+        }
+        newPenalties[0] = penalties[eliteUnitIndex];
+
+        for (int i = 1; i < NUM_OF_UNITS; i++) {
             newPopulation[i] = new int[numberOfStudents];
-            auto parent1 = parentSelection->select(population, fitnesses, NUM_OF_UNITS, numberOfStudents);
-            auto parent2 = parentSelection->select(population, fitnesses, NUM_OF_UNITS, numberOfStudents);
-            //calculateFitness(i);
-            //calculateFitness(i);
+            auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents)];
+            auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents)];
+            unitCrossing->cross(parent1, parent2, newPopulation[i], numberOfStudents);
+            mutate(newPopulation[i]);
+            newPenalties[i] = calculatePenalties(newPopulation[i]);
         }
 
-        // delete old population
-        for (int i = 0; i < NUM_OF_UNITS; i++) {
-            delete population[i];
-        }
-        delete population;
-
-        population = newPopulation;
-
+        assignNewPopulation(newPopulation, newPenalties);
         iteration++;
-    } while(iteration < NUM_OF_ITERATIONS);
 
-    auto endTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-    std::cout << "Execution time for 100 iterations: " << duration.count() << " milliseconds" << std::endl;
+        if (iteration % 10 == 0) {
+            cout << "Iteration " << iteration << " with best unit of penalty: " << penalties[getEliteUnit()] << endl;
+        }
+
+        if (iteration % 100 == 0) {
+            cout << "saving schedule...:\n";
+            printSchedule();
+            cout << "penalties\n";
+            for (int i = 0; i < NUM_OF_UNITS; ++i) {
+                cout << penalties[i] << " ";
+            }
+            cout << "\n";
+        }
+
+    } while (iteration < NUM_OF_ITERATIONS);
 }
 
 void ScheduleSolver::generateRandomPopulations() {
@@ -106,27 +141,111 @@ void ScheduleSolver::generateRandomPopulations() {
         for (int j = 0; j < numberOfStudents; j++) {
             population[i][j] = dist(rng);
         }
-        fitnesses[i] = calculateFitness(i);
+        penalties[i] = calculatePenalties(population[i]);
     }
 }
 
-double ScheduleSolver::calculateFitness(int i) {
-    double sum = 0;
-    for (auto fitnessFunction: fitnessFunctions) {
-        sum += fitnessFunction->calculateFitness(this, i);
+int ScheduleSolver::getEliteUnit() const {
+    auto bestIndex = 0;
+    auto bestValue = penalties[0];
+    for (int i = 1; i < NUM_OF_UNITS; ++i) {
+        if (penalties[i] < bestValue) {
+            bestValue = penalties[i];
+            bestIndex = i;
+        }
     }
+    return bestIndex;
+}
+
+
+double ScheduleSolver::calculatePenalties(int *unit) {
+    double pentaly = 0;
+
+    // TODO: optimize by making it array
+    std::unordered_map<int, int> capacity;
+    for (int i = 0; i < numberOfStudents; ++i) {
+        int appointment = unit[i];
+        capacity[appointment]++;
+    }
+
+    // appointements with broken requirements
+    for (int i = 0; i < numberOfAppointments; ++i) {
+        int numAssigned = capacity[i];
+
+        if (numAssigned > 16) {
+            pentaly += 30 * (numAssigned - 16);
+        } else if (numAssigned < 15) {
+            pentaly += 5 * (15 - numAssigned);
+        }
+    }
+
+    // student collisions
+    pentaly += 70 * calculateCollisions(unit);
+
+    return pentaly;
+}
+
+int ScheduleSolver::calculateCollisions(int *unit) {
+    int sum = 0;
+
+    for (int i = 0; i < numberOfStudents; ++i) {
+        auto jmbag = jmbags[i];
+        auto appointementIndex = unit[i];
+        auto date = appointmentsDate[appointementIndex];
+        if (occupations.contains(jmbag) && occupations[jmbag].contains(date)) {
+            auto times = occupations[jmbag][date];
+            auto from = appointmentsFrom[appointementIndex];
+            auto to = appointmentsTo[appointementIndex];
+            for (int j = 0; j < times.size(); ++j) {
+                if (get<0>(times[i]) < to && from < get<1>(times[i])) {
+                    sum++;
+                    break;
+                }
+            }
+        }
+    }
+
     return sum;
 }
 
-void ScheduleSolver::cross() {
-    cout << "cross" << endl;
+void ScheduleSolver::mutate(int *unit) const {
+    double p = 0.01;
+
+    for (int i = 0; i < numberOfStudents; ++i) {
+        if ((static_cast<double>(std::rand()) / RAND_MAX) < p) {
+            unit[i] = std::rand() % numberOfAppointments;
+        }
+    }
 }
 
-void ScheduleSolver::mutate() {
-    cout << "mutate" << endl;
+void ScheduleSolver::assignNewPopulation(int **newPopulation, double *newPenalties) {
+    for (int i = 0; i < NUM_OF_UNITS; i++) {
+        delete[] population[i];
+    }
+    delete[] population;
+    delete[] penalties;
+    population = newPopulation;
+    penalties = newPenalties;
 }
 
-int ScheduleSolver::chooseParent() {
-    cout << "chooseParent" << endl;
-    return 0;
+void ScheduleSolver::printSchedule() {
+    std::ofstream file("raspored.txt");
+
+    if (file.is_open()) {
+        auto eliteUnitIndex = getEliteUnit();
+        auto eliteUnit = population[eliteUnitIndex];
+        for (int i = 0; i < numberOfAppointments; ++i) {
+            file << appointments[i] << "|";
+            for (int j = 0; j < numberOfStudents; ++j) {
+                if (eliteUnit[j] == i) {
+                    file << jmbags[j] << " ";
+                }
+            }
+            file << "\n";
+        }
+        file.close();
+        std::cout << "File written successfully.\n";
+    } else {
+        std::cout << "Failed to open the file.\n";
+    }
 }

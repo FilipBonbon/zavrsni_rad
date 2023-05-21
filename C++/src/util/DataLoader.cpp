@@ -1,37 +1,46 @@
 #include "../../include/util/DataLoader.hpp"
 #include <fstream>
-#include <cstdlib>
-
 using namespace std;
 
-vector<long> DataLoader::loadJmbags() {
+vector<long long> DataLoader::loadJmbags() {
     ifstream file("../resources/jmbags.txt");
     string jmbag;
 
-    vector<long> jmbags;
+    vector<long long> jmbags;
     while (file >> jmbag) {
-        jmbags.push_back(strtol(jmbag.c_str(), nullptr, 10));
+        jmbags.push_back(std::stoll(jmbag));
     }
 
     file.close();
     return jmbags;
 }
 
-unordered_map<long, vector<string>> DataLoader::loadOccupations() {
+unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> DataLoader::loadOccupations() {
     ifstream file("../resources/zauzetost.csv");
-    string input;
+    string token;
 
-    unordered_map<long, vector<string>> occupations;
-    while (getline(file, input, ';')) {
-        auto jmbag = strtol(input.c_str(), nullptr, 10);
-
-        getline(file, input);
-        auto datetime = input;
-
+    unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> occupations;
+    while (getline(file, token, ';')) {
+        auto jmbag = stoll(token);
         if (!occupations.contains(jmbag)) {
-            occupations.emplace(jmbag, vector<string>());
+            occupations.emplace(jmbag, unordered_map<string, vector<tuple<int, int>>>());
         }
-        occupations.at(jmbag).emplace_back(datetime);
+
+        getline(file, token, ';'); // date
+        auto date = token;
+        if (!occupations[jmbag].contains(date)) {
+            occupations[jmbag].emplace(date, vector<tuple<int, int>>());
+        }
+
+        getline(file, token, ';'); // from
+        token.erase(remove(token.begin(), token.end(), ':'), token.end());
+        auto from = stoi(token);
+
+        getline(file, token, ';'); // to
+        token.erase(remove(token.begin(), token.end(), ':'), token.end());
+        auto to = stoi(token);
+
+        occupations[jmbag][date].emplace_back(from, to);
     }
 
     file.close();

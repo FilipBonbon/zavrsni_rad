@@ -2,35 +2,36 @@
 #define ZAVRSNI_RAD_SCHEDULESOLVER_HPP
 
 #include "../include/strategy/ParentSelection.hpp"
+#include "../include/strategy/UnitCrossing.hpp"
 
 #include <unordered_map>
-#include <list>
 #include <vector>
 #include <string>
-
-class Fitness;
+#include <tuple>
 
 class ScheduleSolver {
-public: // Consts
-    static const int NUM_OF_UNITS = 64;
+private: // Consts
+    static const int NUM_OF_UNITS = 250;
 
-public: // Data
-    long *jmbags = nullptr;
-    std::string *appointments = nullptr; // TODO: possibly remove
-    std::unordered_map<long, std::vector<std::string>> occupations; // TODO: possibly shoten
+private: // Data
+    long long *jmbags;
+    std::string *appointments;
+    std::string *appointmentsDate;
+    int *appointmentsFrom;
+    int *appointmentsTo;
+    std::unordered_map<long long, std::unordered_map<std::string, std::vector<std::tuple<int, int>>>> occupations;
     int numberOfStudents = 0;
     int numberOfAppointments = 0;
     int **population;
-    double *fitnesses;
+    double *penalties;
+    int *collisions;
 
-public: // Strategies
-    std::list<Fitness *> fitnessFunctions;
-    ParentSelection* parentSelection;
-    void* crossStrategy{};
-    void* mutationStrategy{};
+private: // Strategies
+    ParentSelection *parentSelection;
+    UnitCrossing *unitCrossing;
 
 public:
-    explicit ScheduleSolver(std::list<Fitness *>, ParentSelection *);
+    explicit ScheduleSolver(ParentSelection *, UnitCrossing *);
 
     ~ScheduleSolver();
 
@@ -45,13 +46,17 @@ public:
 private:
     void generateRandomPopulations();
 
-    double calculateFitness(int);
+    int getEliteUnit() const;
 
-    void cross();
+    void assignNewPopulation(int **, double *);
 
-    void mutate();
+    double calculatePenalties(int *);
 
-    int chooseParent();
+    int calculateCollisions(int *);
+
+    void mutate(int *) const;
+
+    void printSchedule();
 };
 
 #endif
