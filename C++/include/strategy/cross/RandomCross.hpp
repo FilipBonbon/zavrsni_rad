@@ -9,7 +9,7 @@ class RandomCross : public UnitCrossing {
 public:
     RandomCross();
 
-    void cross(const int *, const int *, int *, int) override;
+    int* cross(const int *, const int *, int) override;
 };
 
 #endif

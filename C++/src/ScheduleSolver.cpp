@@ -107,14 +107,14 @@ void ScheduleSolver::loadAppointments() {
         newCollisions[0] = collisions[eliteUnitIndex];
 
         for (int i = 1; i < NUM_OF_UNITS; i++) {
-            newPopulation[i] = new int[numberOfStudents];
+            //newPopulation[i] = new int[numberOfStudents];
             auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents)];
             auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents)];
-            unitCrossing->cross(parent1, parent2, newPopulation[i], numberOfStudents);
-            mutate(newPopulation[i]);
-            auto [a, b] = calculatePenalties(newPopulation[i]);
-            newPenalties[i] = a;
-            newCollisions[i] = b;
+            auto child = unitCrossing->cross(parent1, parent2, numberOfStudents); mutate(child);
+            auto [penaltyChild, collisionChild] = calculatePenalties(child);
+            newPopulation[i] = child;
+            newPenalties[i] = penaltyChild;
+            newCollisions[i] = collisionChild;
         }
 
         assignNewPopulation(newPopulation, newPenalties, newCollisions);
@@ -122,7 +122,7 @@ void ScheduleSolver::loadAppointments() {
         if (iteration % 25 == 0) {
             auto eliteIndex = getEliteUnit();
             cout << "Iteration " << iteration << " with best unit with " << collisions[eliteIndex]
-                 << " collisions and penlaty: " << penalties[eliteIndex] << "\n";
+                 << " collisions and penalty: " << penalties[eliteIndex] << "\n";
         }
 
         if (iteration % 150 == 0) {
@@ -177,14 +177,14 @@ tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
         capacity[appointment]++;
     }
 
-    // appointements with broken requirements
+    // appointments with broken requirements
     for (int i = 0; i < numberOfAppointments; ++i) {
         int numAssigned = capacity[i];
 
         if (numAssigned > 16) {
             pentaly += 120 * pow((numAssigned - 16), 2);
         } else if (numAssigned < 15) {
-            pentaly += 35 * pow((15 - numAssigned), 2);
+            pentaly += 45 * pow((15 - numAssigned), 2);
         }
     }
 
@@ -192,12 +192,12 @@ tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
     int collNum = 0;
     for (int i = 0; i < numberOfStudents; ++i) {
         auto jmbag = jmbags[i];
-        auto appointementIndex = unit[i];
-        auto date = appointmentsDate[appointementIndex];
+        auto appointmentIndex = unit[i];
+        auto date = appointmentsDate[appointmentIndex];
         if (occupations.contains(jmbag) && occupations.at(jmbag).contains(date)) {
             for (auto &time: occupations[jmbag][date]) {
-                if (get<0>(time) < appointmentsTo[appointementIndex] &&
-                    appointmentsFrom[appointementIndex] < get<1>(time)) {
+                if (get<0>(time) < appointmentsTo[appointmentIndex] &&
+                    appointmentsFrom[appointmentIndex] < get<1>(time)) {
                     collNum++;
                     break;
                 }

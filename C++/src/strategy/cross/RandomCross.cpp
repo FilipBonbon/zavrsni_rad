@@ -3,14 +3,17 @@
 #include <cstdlib>
 #include <ctime>
 
-void RandomCross::cross(const int * parent1, const int * parent2, int * child, int size) {
+int* RandomCross::cross(const int * parent1, const int * parent2, int size) {
+    auto ch1 = new int[size];
+
     for (int i = 0; i < size; ++i) {
         if (std::rand() % 2 == 0) {
-            child[i] = parent1[i];
+            ch1[i] = parent1[i];
         } else {
-            child[i] = parent2[i];
+            ch1[i] = parent2[i];
         }
     }
+    return ch1;
 }
 
 RandomCross::RandomCross() {

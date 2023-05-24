@@ -5,7 +5,7 @@
 
 class HalfCross : public UnitCrossing {
 public:
-    void cross(const int *, const int *, int *, int) override;
+    int* cross(const int *, const int *, int) override;
 };
 
 #endif
