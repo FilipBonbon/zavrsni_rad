@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #include "../../include/util/DataLoader.hpp"
 
@@ -57,6 +58,15 @@ unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> DataLoa
         getline(file, token); // to
         token.erase(remove(token.begin(), token.end(), ':'), token.end());
         auto to = stoi(token);
+
+        auto it = std::find_if(occupations[jmbag][date].begin(), occupations[jmbag][date].end(), [&](const auto &item) {
+            return get<1>(item) == from;
+        });
+
+        if (it != occupations[jmbag][date].end()) {
+            from = get<0>(*it);
+            occupations[jmbag][date].erase(it);
+        }
 
         occupations[jmbag][date].emplace_back(from, to);
     }

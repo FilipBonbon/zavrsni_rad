@@ -6,7 +6,7 @@ KTournament::KTournament(int k) {
     this->k = k;
 }
 
-int KTournament::select(double *penalties, int populationSize, int studentsSize) {
+int KTournament::select(int *penalties, int populationSize, int studentsSize, int *collisions) {
     std::mt19937 gen((std::random_device()()));
     std::uniform_int_distribution<int> dis(0, populationSize - 1);
 
@@ -28,14 +28,19 @@ int KTournament::select(double *penalties, int populationSize, int studentsSize)
         }
     }
 
-    auto bestIdx = 0;
+    auto bestIndex = 0;
     auto bestValue = penalties[unitIndexes[0]];
+    auto bestCollision = collisions[0];
     for (int i = 1; i < k; ++i) {
-        if (penalties[unitIndexes[i]] < bestValue) {
-            bestIdx = i;
-            bestValue = penalties[unitIndexes[i]];
+        if (collisions[i] < bestCollision) {
+            bestValue = penalties[i];
+            bestIndex = i;
+            bestCollision = collisions[i];
+        } else if (collisions[i] == bestCollision && penalties[i] < bestValue) {
+            bestValue = penalties[i];
+            bestIndex = i;
         }
     }
 
-    return bestIdx;
+    return bestIndex;
 }

@@ -28,7 +28,7 @@ ScheduleSolver::ScheduleSolver(ParentSelection *parentSelection,
     for (int i = 0; i < NUM_OF_UNITS; i++) {
         this->population[i] = new int[numberOfStudents];
     }
-    this->penalties = new double[NUM_OF_UNITS];
+    this->penalties = new int[NUM_OF_UNITS];
     this->collisions = new int[NUM_OF_UNITS];
 
     this->generateRandomPopulations();
@@ -94,7 +94,7 @@ void ScheduleSolver::loadAppointments() {
     int iteration = 1;
     do {
         auto **newPopulation = new int *[NUM_OF_UNITS];
-        auto *newPenalties = new double[NUM_OF_UNITS];
+        auto *newPenalties = new int[NUM_OF_UNITS];
         auto *newCollisions = new int[NUM_OF_UNITS];
 
         // elitizm
@@ -107,9 +107,8 @@ void ScheduleSolver::loadAppointments() {
         newCollisions[0] = collisions[eliteUnitIndex];
 
         for (int i = 1; i < NUM_OF_UNITS; i++) {
-            //newPopulation[i] = new int[numberOfStudents];
-            auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents)];
-            auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents)];
+            auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
+            auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
             auto child = unitCrossing->cross(parent1, parent2, numberOfStudents); mutate(child);
             auto [penaltyChild, collisionChild] = calculatePenalties(child);
             newPopulation[i] = child;
@@ -119,13 +118,13 @@ void ScheduleSolver::loadAppointments() {
 
         assignNewPopulation(newPopulation, newPenalties, newCollisions);
 
-        if (iteration % 25 == 0) {
+        if (iteration % 10 == 0) {
             auto eliteIndex = getEliteUnit();
             cout << "Iteration " << iteration << " with best unit with " << collisions[eliteIndex]
                  << " collisions and penalty: " << penalties[eliteIndex] << "\n";
         }
 
-        if (iteration % 150 == 0) {
+        if (iteration % 100 == 0) {
             cout << "saving schedules...:\n";
             printSchedule();
             printScheduleRich();
@@ -168,8 +167,8 @@ int ScheduleSolver::getEliteUnit() const {
 }
 
 
-tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
-    double pentaly = 0;
+tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
+    int penalty = 0;
 
     int *capacity = new int[numberOfAppointments]();
     for (int i = 0; i < numberOfStudents; ++i) {
@@ -182,9 +181,9 @@ tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
         int numAssigned = capacity[i];
 
         if (numAssigned > 16) {
-            pentaly += 120 * pow((numAssigned - 16), 2);
+            penalty += 95 * pow((numAssigned - 16), 2);
         } else if (numAssigned < 15) {
-            pentaly += 45 * pow((15 - numAssigned), 2);
+            penalty += 35 * pow((15 - numAssigned), 2);
         }
     }
 
@@ -194,22 +193,46 @@ tuple<double, int> ScheduleSolver::calculatePenalties(int *unit) {
         auto jmbag = jmbags[i];
         auto appointmentIndex = unit[i];
         auto date = appointmentsDate[appointmentIndex];
+        auto from = appointmentsFrom[appointmentIndex];
+        auto to = appointmentsTo[appointmentIndex];
         if (occupations.contains(jmbag) && occupations.at(jmbag).contains(date)) {
+            auto sequential = false;
+            auto overlap = false;
             for (auto &time: occupations[jmbag][date]) {
-                if (get<0>(time) < appointmentsTo[appointmentIndex] &&
-                    appointmentsFrom[appointmentIndex] < get<1>(time)) {
-                    collNum++;
+                if (get<0>(time) == to || from == get<1>(time)) {
+                    penalty -= 3;
+                    sequential = true;
                     break;
                 }
             }
+            for (auto &time: occupations[jmbag][date]) {
+                if (max(get<1>(time), to) - min(get<0>(time), from) < (get<1>(time) - get<0>(time)) + (to - from)) {
+                    collNum++;
+                    if (sequential) {
+                        penalty += 3;
+                        overlap = true;
+                    }
+                    break;
+                }
+            }
+            if (!overlap && !sequential) {
+                int smallestGap = 1000000;
+                for (auto &time: occupations[jmbag][date]) {
+                    auto gap = min(abs(from - get<1>(time)), abs(to - get<0>(time)));
+                    smallestGap = min(gap, smallestGap);
+                }
+                penalty += pow((smallestGap / 100),2);
+            }
+        } else {
+            penalty += 8;
         }
     }
 
-    pentaly += 200 * collNum;
+    penalty += 175 * collNum;
 
 
     delete[] capacity;
-    return {pentaly, collNum};
+    return {penalty, collNum};
 }
 void ScheduleSolver::mutate(int *unit) const {
     for (int i = 0; i < numberOfStudents; ++i) {
@@ -219,7 +242,7 @@ void ScheduleSolver::mutate(int *unit) const {
     }
 }
 
-void ScheduleSolver::assignNewPopulation(int **newPopulation, double *newPenalties, int* newCollisions) {
+void ScheduleSolver::assignNewPopulation(int **newPopulation, int *newPenalties, int* newCollisions) {
     for (int i = 0; i < NUM_OF_UNITS; i++) {
         delete[] population[i];
     }
@@ -259,22 +282,21 @@ void ScheduleSolver::printScheduleRich() {
         auto eliteUnitIndex = getEliteUnit();
         auto eliteUnit = population[eliteUnitIndex];
 
-        file << "Total penalty: " << penalties[eliteUnitIndex] << "\n\n";
+        file << "Total penalty: " << penalties[eliteUnitIndex] << "\n" << endl;
         for (int i = 0; i < numberOfStudents; ++i) {
             auto jmbag = jmbags[i];
             auto appointmentIndex = eliteUnit[i];
             auto appointmentDate = appointmentsDate[appointmentIndex];
 
-            file << i + 1 << ". " << jmbag << "\n";
+            file << i + 1 << ". " << jmbag << endl;
             file << "-------------------------------------\n";
             if (occupations.contains(jmbag) && occupations[jmbag].contains(appointmentDate)) {
-                auto vec = occupations[jmbag][appointmentDate];
-                for (int j = 0; j < vec.size(); ++j) {
-                    file << appointmentDate << " " << get<0>(vec[j]) << " " << get<1>(vec[j]) << "\n";
+                for (auto & vec : occupations[jmbag][appointmentDate]) {
+                    file << appointmentDate << " " << get<0>(vec) << " " << get<1>(vec) << endl;
                 }
-                file << appointments[appointmentIndex] << "\n";
+                file << appointments[appointmentIndex] << endl;
             } else {
-                file << appointments[appointmentIndex] << "\n";
+                file << appointments[appointmentIndex] << endl;
             }
             file << "\n\n";
         }

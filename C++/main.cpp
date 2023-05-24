@@ -1,6 +1,4 @@
-#include <iostream>
 #include <list>
-#include <set>
 
 #include "include/ScheduleSolver.hpp"
 #include "include/strategy/ParentSelection.hpp"
@@ -16,8 +14,8 @@ int main() {
     UnitCrossing *unitCrossing = new RandomCross();
 
     // parameters
-    int numOfUnits = 20;
-    double mutation = 0.005;
+    int numOfUnits = 25;
+    double mutation = 0.003;
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
     model.train();

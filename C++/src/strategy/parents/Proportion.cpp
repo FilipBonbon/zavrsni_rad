@@ -3,7 +3,7 @@
 
 #include "../../../include/strategy/parents/Proportion.hpp"
 
-int Proportion::select(double *penalties, int populationSize, int studentsSize) {
+int Proportion::select(int *penalties, int populationSize, int studentsSize, int *collisions) {
     double fitnessesSum = 0.0;
     for (int i = 0; i < populationSize; ++i) {
         fitnessesSum += penalties[i];

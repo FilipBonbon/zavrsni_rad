@@ -5,7 +5,7 @@
 
 class Proportion : public ParentSelection {
 public:
-    int select(double *, int, int) override;
+    int select(int *, int, int, int *) override;
 };
 
 

@@ -24,7 +24,7 @@ private: // Data
     int numberOfStudents;
     int numberOfAppointments;
     int **population;
-    double *penalties;
+    int *penalties;
     int *collisions;
 
 private: // Strategies
@@ -49,9 +49,9 @@ private:
 
     int getEliteUnit() const;
 
-    void assignNewPopulation(int **, double *, int *);
+    void assignNewPopulation(int **, int *, int *);
 
-    std::tuple<double, int> calculatePenalties(int *);
+    std::tuple<int, int> calculatePenalties(int *);
 
     void mutate(int *) const;
 
