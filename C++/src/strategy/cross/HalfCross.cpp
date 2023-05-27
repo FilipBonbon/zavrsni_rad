@@ -21,5 +21,5 @@ int* HalfCross::cross(const int * parent1, const int * parent2, int size) {
             child[i] = parent1[i];
         }
     }
-    return nullptr;
+    return child;
 }
