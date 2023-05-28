@@ -9,13 +9,13 @@
 using namespace std;
 
 int main() {
-    // strategy setup
-    ParentSelection *parentSelection = new KTournament(2);
-    UnitCrossing *unitCrossing = new RandomCross();
-
     // parameters
-    int numOfUnits = 25;
+    int numOfUnits = 20;
     double mutation = 0.003;
+
+    // strategy setup
+    ParentSelection *parentSelection = new KTournament(3);
+    UnitCrossing *unitCrossing = new RandomCross();
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
     model.train();

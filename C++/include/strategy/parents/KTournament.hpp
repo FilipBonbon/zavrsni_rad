@@ -1,6 +1,8 @@
 #ifndef ZAVRSNI_RAD_KTOURNAMENT_HPP
 #define ZAVRSNI_RAD_KTOURNAMENT_HPP
 
+#include <random>
+
 #include "../ParentSelection.hpp"
 
 class KTournament : public ParentSelection {

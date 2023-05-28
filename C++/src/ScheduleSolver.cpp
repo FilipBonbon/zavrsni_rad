@@ -109,6 +109,9 @@ void ScheduleSolver::loadAppointments() {
         for (int i = 1; i < NUM_OF_UNITS; i++) {
             auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
             auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
+            while (parent2 == parent1) {
+                parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
+            }
             auto child = unitCrossing->cross(parent1, parent2, numberOfStudents); mutate(child);
             auto [penaltyChild, collisionChild] = calculatePenalties(child);
             newPopulation[i] = child;
@@ -264,7 +267,7 @@ void ScheduleSolver::printSchedule() {
             file << appointments[i] << "|";
             for (int j = 0; j < numberOfStudents; ++j) {
                 if (eliteUnit[j] == i) {
-                    file << jmbags[j] << " ";
+                    file << std::setw(10) << std::setfill('0') << jmbags[j] << " ";
                 }
             }
             file << "\n";
@@ -288,7 +291,7 @@ void ScheduleSolver::printScheduleRich() {
             auto appointmentIndex = eliteUnit[i];
             auto appointmentDate = appointmentsDate[appointmentIndex];
 
-            file << i + 1 << ". " << jmbag << endl;
+            file << i + 1 << ". " << std::setw(10) << std::setfill('0') <<  jmbag << endl;
             file << "-------------------------------------\n";
             if (occupations.contains(jmbag) && occupations[jmbag].contains(appointmentDate)) {
                 for (auto & vec : occupations[jmbag][appointmentDate]) {
