@@ -6,7 +6,7 @@ KTournament::KTournament(int k) {
     this->k = k;
 }
 
-int KTournament::select(int *penalties, int populationSize, int studentsSize, int *collisions) {
+int KTournament::select(int *penalties, int populationSize, int *collisions) {
     std::mt19937 gen((std::random_device()()));
     std::uniform_int_distribution<int> dis(0, populationSize - 1);
 

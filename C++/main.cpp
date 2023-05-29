@@ -10,8 +10,8 @@ using namespace std;
 
 int main() {
     // parameters
-    int numOfUnits = 20;
-    double mutation = 0.003;
+    int numOfUnits = 25;
+    double mutation = 0.002;
 
     // strategy setup
     ParentSelection *parentSelection = new KTournament(3);

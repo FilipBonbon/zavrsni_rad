@@ -107,13 +107,14 @@ void ScheduleSolver::loadAppointments() {
         newCollisions[0] = collisions[eliteUnitIndex];
 
         for (int i = 1; i < NUM_OF_UNITS; i++) {
-            auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
-            auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
+            auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, collisions)];
+            auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS,  collisions)];
             while (parent2 == parent1) {
-                parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, numberOfStudents, collisions)];
+                parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS,  collisions)];
             }
             auto child = unitCrossing->cross(parent1, parent2, numberOfStudents); mutate(child);
             auto [penaltyChild, collisionChild] = calculatePenalties(child);
+
             newPopulation[i] = child;
             newPenalties[i] = penaltyChild;
             newCollisions[i] = collisionChild;
@@ -186,7 +187,7 @@ tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
         if (numAssigned > 16) {
             penalty += 95 * pow((numAssigned - 16), 2);
         } else if (numAssigned < 15) {
-            penalty += 35 * pow((15 - numAssigned), 2);
+            penalty += 45 * pow((15 - numAssigned), 2);
         }
     }
 
@@ -198,40 +199,39 @@ tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
         auto date = appointmentsDate[appointmentIndex];
         auto from = appointmentsFrom[appointmentIndex];
         auto to = appointmentsTo[appointmentIndex];
-        if (occupations.contains(jmbag) && occupations.at(jmbag).contains(date)) {
+        if (occupations.contains(jmbag) && occupations[jmbag].contains(date)) {
             auto sequential = false;
             auto overlap = false;
             for (auto &time: occupations[jmbag][date]) {
-                if (get<0>(time) == to || from == get<1>(time)) {
-                    penalty -= 3;
-                    sequential = true;
-                    break;
-                }
-            }
-            for (auto &time: occupations[jmbag][date]) {
                 if (max(get<1>(time), to) - min(get<0>(time), from) < (get<1>(time) - get<0>(time)) + (to - from)) {
                     collNum++;
-                    if (sequential) {
-                        penalty += 3;
-                        overlap = true;
-                    }
+                    overlap = true;
                     break;
                 }
             }
-            if (!overlap && !sequential) {
-                int smallestGap = 1000000;
+            if (!overlap) {
                 for (auto &time: occupations[jmbag][date]) {
-                    auto gap = min(abs(from - get<1>(time)), abs(to - get<0>(time)));
-                    smallestGap = min(gap, smallestGap);
+                    if (get<0>(time) == to || from == get<1>(time)) {
+                        penalty -= 5;
+                        sequential = true;
+                        break;
+                    }
                 }
-                penalty += pow((smallestGap / 100),2);
+                if (!sequential) {
+                    int smallestGap = 1000000;
+                    for (auto &time: occupations[jmbag][date]) {
+                        auto gap = min(abs(from - get<1>(time)), abs(to - get<0>(time)));
+                        smallestGap = min(gap, smallestGap);
+                    }
+                    penalty += 2 * pow((smallestGap / 100),2);
+                }
             }
         } else {
             penalty += 8;
         }
     }
 
-    penalty += 175 * collNum;
+    penalty += 150 * collNum;
 
 
     delete[] capacity;

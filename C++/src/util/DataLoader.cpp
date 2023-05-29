@@ -2,6 +2,7 @@
 #include <sstream>
 #include <algorithm>
 
+
 #include "../../include/util/DataLoader.hpp"
 
 using namespace std;
@@ -60,11 +61,15 @@ unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> DataLoa
         auto to = stoi(token);
 
         auto it = std::find_if(occupations[jmbag][date].begin(), occupations[jmbag][date].end(), [&](const auto &item) {
-            return get<1>(item) == from;
+            return get<0>(item) == to || get<1>(item) == from;
         });
 
         if (it != occupations[jmbag][date].end()) {
-            from = get<0>(*it);
+            if (get<0>(*it) == to) {
+                to = get<1>(*it);
+            } else {
+                from = get<0>(*it);
+            }
             occupations[jmbag][date].erase(it);
         }
 
@@ -72,6 +77,7 @@ unordered_map<long long, unordered_map<string, vector<tuple<int, int>>>> DataLoa
     }
 
     file.close();
+
     return occupations;
 }
 
