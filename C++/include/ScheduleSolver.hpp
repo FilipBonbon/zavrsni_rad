@@ -41,8 +41,12 @@ private:
 
     void loadAppointments();
 
+    void loadOccupations();
+
 public:
-    [[noreturn]] void train();
+    void train();
+
+    void train(long);
 
 private:
     void generateRandomPopulations();

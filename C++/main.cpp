@@ -18,5 +18,5 @@ int main() {
     UnitCrossing *unitCrossing = new RandomCross();
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
-    model.train();
+    model.train(20000);
 }
