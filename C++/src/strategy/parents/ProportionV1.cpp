@@ -1,21 +1,18 @@
 #include <random>
 #include <iostream>
 
-#include "../../../include/strategy/parents/Proportion.hpp"
+#include "../../../include/strategy/parents/ProportionV1.hpp"
 
-int Proportion::select(int *penalties, int populationSize, int *collisions) {
-    double fitnessesSum = 0.0;
+int ProportionV1::select(int *penalties, int populationSize, int *collisions) {
+    double penaltySum = 0.0;
     for (int i = 0; i < populationSize; ++i) {
-        fitnessesSum += penalties[i];
-        if (penalties[i] == 0) {
-            return i;
-        }
+        penaltySum += penalties[i];
     }
 
     double probs[populationSize];
     double probSum = 0.0;
     for (int i = 0; i < populationSize; ++i) {
-        probs[i] = (fitnessesSum - penalties[i]) / fitnessesSum;
+        probs[i] = (penaltySum - penalties[i]) / penaltySum;
         probSum += probs[i];
     }
 

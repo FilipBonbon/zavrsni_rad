@@ -4,7 +4,8 @@
 #include "include/ScheduleSolver.hpp"
 #include "include/strategy/ParentSelection.hpp"
 #include "include/strategy/parents/KTournament.hpp"
-#include "include/strategy/parents/Proportion.hpp"
+#include "include/strategy/parents/ProportionV1.hpp"
+#include "include/strategy/parents/ProportionV2.hpp"
 #include "include/strategy/UnitCrossing.hpp"
 #include "include/strategy/cross/AlternatingCross.hpp"
 #include "include/strategy/cross/KCross.hpp"
@@ -14,17 +15,17 @@ using namespace std;
 
 int main() {
     // parameters
-    int numOfUnits = 15;
+    int numOfUnits = 25;
     double mutation = 0.002;
 
     // strategy setup
-    ParentSelection *parentSelection = new KTournament(3);
-    UnitCrossing *unitCrossing = new RandomCross();
+    ParentSelection *parentSelection = new ProportionV2();
+    UnitCrossing *unitCrossing = new KCross(2);
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
 
     auto start = chrono::high_resolution_clock::now();
-    model.train(3000);
+    model.train(5000);
     auto end = chrono::high_resolution_clock::now();
 
     chrono::duration<double> duration = end - start;
