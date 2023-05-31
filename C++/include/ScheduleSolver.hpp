@@ -62,6 +62,8 @@ private:
     void printSchedule();
 
     void printScheduleRich();
+
+    void exportIterationData();
 };
 
 #endif

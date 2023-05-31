@@ -4,4 +4,4 @@ project(zavrsni_rad)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(zavrsni_rad main.cpp src/util/DataLoader.cpp src/ScheduleSolver.cpp
-        include/strategy/ParentSelection.hpp src/strategy/parents/Proportion.cpp include/strategy/parents/Proportion.hpp include/strategy/UnitCrossing.hpp src/strategy/cross/RandomCross.cpp include/strategy/cross/RandomCross.hpp src/strategy/cross/AlternatingCross.cpp include/strategy/cross/AlternatingCross.hpp src/strategy/cross/HalfCross.cpp include/strategy/cross/HalfCross.hpp src/strategy/parents/KTournament.cpp include/strategy/parents/KTournament.hpp)
+        include/strategy/ParentSelection.hpp src/strategy/parents/Proportion.cpp include/strategy/parents/Proportion.hpp include/strategy/UnitCrossing.hpp src/strategy/cross/RandomCross.cpp include/strategy/cross/RandomCross.hpp src/strategy/cross/AlternatingCross.cpp include/strategy/cross/AlternatingCross.hpp src/strategy/cross/KCross.cpp include/strategy/cross/KCross.hpp src/strategy/parents/KTournament.cpp include/strategy/parents/KTournament.hpp)

@@ -108,7 +108,8 @@ void ScheduleSolver::train(long max_iterations) {
         newPenalties[0] = penalties[eliteUnitIndex];
         newCollisions[0] = collisions[eliteUnitIndex];
 
-        for (int i = 1; i < NUM_OF_UNITS; i++) {
+        for (int i = 1; i < NUM_OF_UNITS; i++) { // ELITIZAM
+        //for (int i = 0; i < NUM_OF_UNITS; i++) { // BEZ ELITIZMA
             auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, collisions)];
             auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, collisions)];
             while (parent2 == parent1) {
@@ -137,22 +138,29 @@ void ScheduleSolver::train(long max_iterations) {
             printScheduleRich();
         }
 
+        exportIterationData();
+
         iteration++;
     } while (iteration < max_iterations);
-
-    auto eliteIndex = getEliteUnit();
-    cout << "Training finished. Found best unit with " << collisions[eliteIndex]
-         << " collisions and penalty: " << penalties[eliteIndex] << "\n";
 
     cout << "Saving schedules...:\n";
     printSchedule();
     printScheduleRich();
+
+    exportIterationData();
+    auto eliteIndex = getEliteUnit();
+    cout << "Training finished. Found best unit with " << collisions[eliteIndex]
+         << " collisions and penalty: " << penalties[eliteIndex] << "\n";
 }
 
 void ScheduleSolver::generateRandomPopulations() {
     random_device rd;
     mt19937 rng(rd());
     uniform_int_distribution<int> dist(0, numberOfAppointments - 1);
+
+    ofstream file("data.txt");
+    file << NUM_OF_UNITS << "\n";
+    file.close();
 
     this->population = new int *[this->NUM_OF_UNITS];
     for (int i = 0; i < this->NUM_OF_UNITS; i++) {
@@ -169,6 +177,8 @@ void ScheduleSolver::generateRandomPopulations() {
         this->penalties[i] = a;
         this->collisions[i] = b;
     }
+
+    exportIterationData();
 }
 
 int ScheduleSolver::getEliteUnit() const {
@@ -224,7 +234,6 @@ tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
                 if (max(get<1>(time), to) - min(get<0>(time), from) < (get<1>(time) - get<0>(time)) + (to - from)) {
                     collNum++;
                     overlap = true;
-                    break;
                 }
             }
             if (!overlap) {
@@ -245,7 +254,7 @@ tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
                 }
             }
         } else {
-            penalty += 8;
+            penalty += 100;
         }
     }
 
@@ -346,4 +355,13 @@ void ScheduleSolver::printScheduleRich() {
     } else {
         std::cout << "Failed to open raspored_preklapanja.txt.\n";
     }
+}
+
+void ScheduleSolver::exportIterationData() {
+    auto file = ofstream("data.txt", std::ios::app);
+    for (int i = 0; i < NUM_OF_UNITS - 1; ++i) {
+        file << penalties[i] << " ";
+    }
+    file << penalties[NUM_OF_UNITS - 1] << "\n";
+    file.close();
 }
