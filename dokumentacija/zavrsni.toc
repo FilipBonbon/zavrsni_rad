@@ -1,0 +1,35 @@
+\babel@toc {croatian}{}\relax 
+\contentsline {chapter}{Popis slika}{vi}{}%
+\contentsline {chapter}{\numberline {1}Uvod}{1}{}%
+\contentsline {chapter}{\numberline {2}Problem raspoređivanja studenta u grupe}{2}{}%
+\contentsline {section}{\numberline {2.1}Stroga ograničenja}{2}{}%
+\contentsline {section}{\numberline {2.2}Blaga ograničenja}{3}{}%
+\contentsline {chapter}{\numberline {3}Genetski algoritam}{4}{}%
+\contentsline {chapter}{\numberline {4}Dodjela termina laboratorijskih vježbi}{7}{}%
+\contentsline {section}{\numberline {4.1}Reprezentacija rasporeda u obliku jedinke}{7}{}%
+\contentsline {subsection}{\numberline {4.1.1}Niz termina s listom studenata}{8}{}%
+\contentsline {subsection}{\numberline {4.1.2}Niz studenta s dodijeljenim terminom}{9}{}%
+\contentsline {section}{\numberline {4.2}Ocijena rasporeda}{10}{}%
+\contentsline {subsection}{\numberline {4.2.1}Dobrota i kazna}{10}{}%
+\contentsline {subsubsection}{\numberline {4.2.1.1}Dobrota}{11}{}%
+\contentsline {subsubsection}{\numberline {4.2.1.2}Kazna}{11}{}%
+\contentsline {subsubsection}{\numberline {4.2.1.3}Kazna s kombinacijom dobrote}{11}{}%
+\contentsline {subsection}{\numberline {4.2.2}Ograničenje broja studenata}{12}{}%
+\contentsline {subsection}{\numberline {4.2.3}Izračun preklapanja}{13}{}%
+\contentsline {subsection}{\numberline {4.2.4}Slijedni termini}{14}{}%
+\contentsline {subsection}{\numberline {4.2.5}Pauza nastala nakon dodijeljenog termina}{14}{}%
+\contentsline {subsection}{\numberline {4.2.6}Termin dodjeljen u danu bez nastavnih obveza}{15}{}%
+\contentsline {section}{\numberline {4.3}Elitizam}{15}{}%
+\contentsline {section}{\numberline {4.4}Odabir roditelja}{16}{}%
+\contentsline {subsection}{\numberline {4.4.1}Proporcionalna selekcija}{17}{}%
+\contentsline {subsection}{\numberline {4.4.2}K-turnirska selekcija}{19}{}%
+\contentsline {section}{\numberline {4.5}Križanje roditelja}{20}{}%
+\contentsline {subsection}{\numberline {4.5.1}Nasumično križanje}{20}{}%
+\contentsline {subsection}{\numberline {4.5.2}Alternirajuće k-križanje}{21}{}%
+\contentsline {section}{\numberline {4.6}Mutacija}{22}{}%
+\contentsline {subsection}{\numberline {4.6.1}Promjena termina za fiksan broj mjesta}{23}{}%
+\contentsline {subsection}{\numberline {4.6.2}Nasumičan odabir termina}{23}{}%
+\contentsline {section}{\numberline {4.7}Veličina populacije}{24}{}%
+\contentsline {chapter}{\numberline {5}Usporedba rezultata}{25}{}%
+\contentsline {chapter}{\numberline {6}Zaključak}{26}{}%
+\contentsline {chapter}{Literatura}{27}{}%

@@ -4,15 +4,21 @@
 #include "../../../include/strategy/parents/ProportionV1.hpp"
 
 int ProportionV1::select(int *penalties, int populationSize, int *collisions) {
-    double penaltySum = 0.0;
-    for (int i = 0; i < populationSize; ++i) {
-        penaltySum += penalties[i];
+    auto smallest = penalties[0];
+    auto biggest = penalties[0];
+    for (int i = 1; i < populationSize; ++i) {
+        if (penalties[i] < smallest) {
+            smallest = penalties[i];
+        } else if (penalties[i] > biggest) {
+            biggest = penalties[i];
+        }
     }
+    auto range = biggest + smallest;
 
     double probs[populationSize];
     double probSum = 0.0;
     for (int i = 0; i < populationSize; ++i) {
-        probs[i] = (penaltySum - penalties[i]) / penaltySum;
+        probs[i] = range - penalties[i];
         probSum += probs[i];
     }
 

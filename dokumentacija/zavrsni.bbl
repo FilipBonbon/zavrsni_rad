@@ -1,0 +1,29 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Achini~Kumari(2017)]{herath2017genetic}
+H.~Achini~Kumari.
+\newblock Genetic algorithm for university course timetabling problem.
+\newblock Magistarski rad, University of Mississippi, 2017.
+
+\bibitem[Ganguli i Roy(2017)]{ganguli2017study}
+R.~Ganguli i S.~Roy.
+\newblock A study on course timetable scheduling using graph coloring approach.
+\newblock \emph{International Journal of Computational and Applied
+  Mathematics}, 12\penalty0 (2):\penalty0 469--485, 2017.
+
+\bibitem[Čupić(2011)]{cupic-disertacija}
+M.~Čupić.
+\newblock \emph{Raspoređivanje nastavnih aktinosti evolucijskim računanjem}.
+\newblock Doktorska disertacija, Fakultet elektrotehnike i računarstva, 2011.
+
+\bibitem[Čupić(2019)]{cupic-skripta}
+M.~Čupić.
+\newblock Evolucijsko računarstvo, 2019.
+\newblock URL \url{http://java.zemris.fer.hr/nastava/ui/evo/evo-20190604.pdf}.
+
+\end{thebibliography}

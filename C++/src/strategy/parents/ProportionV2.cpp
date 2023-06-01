@@ -4,33 +4,33 @@
 #include "../../../include/strategy/parents/ProportionV2.hpp"
 
 int ProportionV2::select(int *penalties, int populationSize, int *collisions) {
-    auto smallest = penalties[0];
+    double smallest = penalties[0];
     for (int i = 1; i < populationSize; ++i) {
-        if (penalties[i] < smallest) smallest = penalties[i];
+        if (penalties[i] < smallest) {
+            smallest = penalties[i];
+        }
     }
 
-    double probs[populationSize];
-    smallest = -smallest;
+    double probabilities[populationSize];
     for (int i = 0; i < populationSize; ++i) {
-        probs[i] = penalties[i] + smallest;
+        probabilities[i] = penalties[i] - smallest;
     }
 
-    double penaltySum = 0.0;
+    double biggest = probabilities[0];
+    for (int i = 1; i < populationSize; ++i) {
+        if (probabilities[i] > biggest) {
+            biggest = probabilities[i];
+        }
+    }
+
+    double sum = 0;
     for (int i = 0; i < populationSize; ++i) {
-        penaltySum += probs[i];
+        probabilities[i] = biggest - probabilities[i];
+        sum += probabilities[i];
     }
 
     for (int i = 0; i < populationSize; ++i) {
-        probs[i] = (penaltySum - probs[i]) / penaltySum;
-    }
-
-    double probSum = 0.0;
-    for (int i = 0; i < populationSize; ++i) {
-        probSum += probs[i];
-    }
-
-    for (int i = 0; i < populationSize; ++i) {
-        probs[i] /= probSum;
+        probabilities[i] /= sum;
     }
 
     std::mt19937 gen((std::random_device()()));
@@ -39,7 +39,7 @@ int ProportionV2::select(int *penalties, int populationSize, int *collisions) {
 
     double area = 0.0;
     for (int i = 0; i < populationSize; ++i) {
-        area += probs[i];
+        area += probabilities[i];
         if (randomNum <= area) {
             return i;
         }

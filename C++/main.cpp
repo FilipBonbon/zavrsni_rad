@@ -15,17 +15,17 @@ using namespace std;
 
 int main() {
     // parameters
-    int numOfUnits = 25;
+    int numOfUnits = 100;
     double mutation = 0.002;
 
     // strategy setup
-    ParentSelection *parentSelection = new ProportionV2();
-    UnitCrossing *unitCrossing = new KCross(2);
+    ParentSelection *parentSelection = new KTournament(3);
+    UnitCrossing *unitCrossing = new RandomCross();
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
 
     auto start = chrono::high_resolution_clock::now();
-    model.train(5000);
+    model.train(500);
     auto end = chrono::high_resolution_clock::now();
 
     chrono::duration<double> duration = end - start;
