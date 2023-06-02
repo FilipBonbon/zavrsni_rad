@@ -55,7 +55,7 @@ private:
 
     void assignNewPopulation(int **, int *, int *);
 
-    std::tuple<int, int> calculatePenalties(int *);
+    std::tuple<int, int> calculatePenalties(const int *);
 
     void mutate(int *) const;
 

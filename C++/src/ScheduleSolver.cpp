@@ -108,8 +108,7 @@ void ScheduleSolver::train(long max_iterations) {
         newPenalties[0] = penalties[eliteUnitIndex];
         newCollisions[0] = collisions[eliteUnitIndex];
 
-        for (int i = 1; i < NUM_OF_UNITS; i++) { // ELITIZAM
-        //for (int i = 0; i < NUM_OF_UNITS; i++) { // BEZ ELITIZMA
+        for (int i = 1; i < NUM_OF_UNITS; i++) {
             auto parent1 = population[parentSelection->select(penalties, NUM_OF_UNITS, collisions)];
             auto parent2 = population[parentSelection->select(penalties, NUM_OF_UNITS, collisions)];
             while (parent2 == parent1) {
@@ -199,7 +198,7 @@ int ScheduleSolver::getEliteUnit() const {
 }
 
 
-tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
+tuple<int, int> ScheduleSolver::calculatePenalties(const int *unit) {
     auto penalty = 0;
 
     auto *capacity = new int[numberOfAppointments]();
@@ -215,7 +214,7 @@ tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
         if (numAssigned > 16) {
             penalty += 95 * pow((numAssigned - 16), 2);
         } else if (numAssigned < 15) {
-            penalty += 45 * pow((15 - numAssigned), 2);
+            penalty += 55 * pow((15 - numAssigned), 2);
         }
     }
 
@@ -259,7 +258,6 @@ tuple<int, int> ScheduleSolver::calculatePenalties(int *unit) {
     }
 
     penalty += 150 * collNum;
-
 
     delete[] capacity;
     return {penalty, collNum};

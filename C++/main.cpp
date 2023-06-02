@@ -15,7 +15,7 @@ using namespace std;
 
 int main() {
     // parameters
-    int numOfUnits = 100;
+    int numOfUnits = 25;
     double mutation = 0.002;
 
     // strategy setup
@@ -25,7 +25,7 @@ int main() {
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
 
     auto start = chrono::high_resolution_clock::now();
-    model.train(500);
+    model.train();
     auto end = chrono::high_resolution_clock::now();
 
     chrono::duration<double> duration = end - start;
