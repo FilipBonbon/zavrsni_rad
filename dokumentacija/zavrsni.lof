@@ -2,12 +2,12 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Podjela evolucijskog računanja na glavne grane uz odabrane algoritme. \citep {cupic-disertacija}\relax }}{4}{}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Podjela evolucijskog računanja na glavne grane uz odabrane algoritme \citep {cupic-disertacija}.\relax }}{4}{}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Prikaz zapisa nastavnih obveza studenta u memoriji.\relax }}{8}{}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Prikaz niza termina s listom studenata u memoriji.\relax }}{9}{}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Prikaz niza termina s listom studenata u memoriji.\relax }}{10}{}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Provjera preklapanja dva termina.\relax }}{13}{}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Provjera preklapanja dvaju termina.\relax }}{13}{}%
 \contentsline {figure}{\numberline {4.5}{\ignorespaces Generirani raspored s uključenim elitizmom.\relax }}{15}{}%
 \contentsline {figure}{\numberline {4.6}{\ignorespaces Generirani rasporedi s isključenim elitizmom.\relax }}{16}{}%
 \contentsline {figure}{\numberline {4.7}{\ignorespaces Proporcionalna selekcija roditelja.\relax }}{18}{}%
@@ -16,26 +16,26 @@
 \contentsline {figure}{\numberline {4.10}{\ignorespaces Alternirajuće križanje s K = 3.\relax }}{21}{}%
 \contentsline {figure}{\numberline {4.11}{\ignorespaces Alternirajuće križanje s K = 1.\relax }}{21}{}%
 \contentsline {figure}{\numberline {4.12}{\ignorespaces Alternirajuće križanje s K = N/2.\relax }}{22}{}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Mutacija uvečanjem termin za fiskan broj K = 3.\relax }}{23}{}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Mutacija uvečanjem termin za fiskan broj K = 3.\relax }}{22}{}%
 \contentsline {figure}{\numberline {4.14}{\ignorespaces Mutacija dodjelom nasumičnog termina.\relax }}{23}{}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces (a) kazna = 25 (b) kazna = 150 (c) kazna = 250\relax }}{27}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{27}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{27}{}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{27}{}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Rasporedi s uključenim elitizmom.\relax }}{28}{}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Rasporedi s isključenim elitizmom.\relax }}{28}{}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Poboljšanja verzija proprocionalne selekcije s isključenim elitizmom.\relax }}{29}{}%
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Osnovna verzija proprocionalne selekcije s isključenim elitizmom.\relax }}{29}{}%
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Poboljšanja verzija proprocionalne selekcije s uključenim elitizmom.\relax }}{30}{}%
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Osnovna verzija proprocionalne selekcije s uključenim elitizmom.\relax }}{30}{}%
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Mutacija promjenom termina za fiksni broj mjesta.\relax }}{31}{}%
-\contentsline {figure}{\numberline {5.9}{\ignorespaces (a) nasumično (b) naizmjenično s K=1 (c) naizmjenično s K=3 (d) pola rasporeda\relax }}{31}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{31}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{31}{}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{31}{}%
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{31}{}%
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Mutacija sa stopom mutacije 0.\relax }}{33}{}%
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Mutacija sa stopom mutacije 0.1.\relax }}{33}{}%
-\contentsline {figure}{\numberline {5.12}{\ignorespaces Referentne postavke algoritma.\relax }}{34}{}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces (a) kazna = 25 (b) kazna = 150 (c) kazna = 250\relax }}{26}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{26}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{26}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{26}{}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Rasporedi s uključenim elitizmom.\relax }}{27}{}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Rasporedi s isključenim elitizmom.\relax }}{27}{}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Poboljšana verzija proprocionalne selekcije s isključenim elitizmom.\relax }}{28}{}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Osnovna verzija proprocionalne selekcije s isključenim elitizmom.\relax }}{28}{}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Poboljšana verzija proprocionalne selekcije s uključenim elitizmom.\relax }}{29}{}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Osnovna verzija proprocionalne selekcije s uključenim elitizmom.\relax }}{29}{}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Mutacija promjenom termina za fiksni broj mjesta.\relax }}{30}{}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces (a) nasumično (b) naizmjenično s K=1 (c) naizmjenično s K=3 (d) pola rasporeda\relax }}{30}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{30}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{30}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{30}{}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{30}{}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Mutacija sa stopom mutacije 0.\relax }}{32}{}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Mutacija sa stopom mutacije 0.1.\relax }}{32}{}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Referentne postavke algoritma.\relax }}{33}{}%
 \addvspace {10\p@ }
