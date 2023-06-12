@@ -4,7 +4,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Podjela evolucijskog računanja na glavne grane uz odabrane algoritme \citep {cupic-disertacija}.\relax }}{4}{}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Prikaz zapisa nastavnih obveza studenta u memoriji.\relax }}{8}{}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Prikaz zapisa nastavnih obveza studenata u memoriji.\relax }}{8}{}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Prikaz niza termina s listom studenata u memoriji.\relax }}{9}{}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Prikaz niza termina s listom studenata u memoriji.\relax }}{10}{}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Provjera preklapanja dvaju termina.\relax }}{13}{}%
@@ -16,7 +16,7 @@
 \contentsline {figure}{\numberline {4.10}{\ignorespaces Alternirajuće križanje s K = 3.\relax }}{21}{}%
 \contentsline {figure}{\numberline {4.11}{\ignorespaces Alternirajuće križanje s K = 1.\relax }}{21}{}%
 \contentsline {figure}{\numberline {4.12}{\ignorespaces Alternirajuće križanje s K = N/2.\relax }}{22}{}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Mutacija uvečanjem termin za fiskan broj K = 3.\relax }}{22}{}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Mutacija uvećanjem termina za fiskan broj K = 3.\relax }}{22}{}%
 \contentsline {figure}{\numberline {4.14}{\ignorespaces Mutacija dodjelom nasumičnog termina.\relax }}{23}{}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces (a) kazna = 25 (b) kazna = 150 (c) kazna = 250\relax }}{26}{}%

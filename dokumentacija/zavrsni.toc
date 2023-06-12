@@ -25,7 +25,7 @@
 \contentsline {subsection}{\numberline {4.4.2}Turnirska selekcija}{18}{}%
 \contentsline {section}{\numberline {4.5}Križanje roditelja}{20}{}%
 \contentsline {subsection}{\numberline {4.5.1}Nasumično križanje}{20}{}%
-\contentsline {subsection}{\numberline {4.5.2}Alternirajuće k-križanje}{20}{}%
+\contentsline {subsection}{\numberline {4.5.2}Alternirajuće križanje}{20}{}%
 \contentsline {section}{\numberline {4.6}Mutacija}{21}{}%
 \contentsline {subsection}{\numberline {4.6.1}Promjena termina za fiksan broj mjesta}{22}{}%
 \contentsline {subsection}{\numberline {4.6.2}Nasumičan odabir termina}{23}{}%

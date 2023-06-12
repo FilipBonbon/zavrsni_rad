@@ -29,13 +29,13 @@
 
 Izrada rasporeda problem je koji je prisutan svakodnevno, kako u obrazovnim institucijama poput škola, fakulteta, učilišta tako i u raspoređivanju satnice u industriji. Svaki raspored ima eksponencijalan broj konfiguracija i rješenje problema jednostavno nije izvedivo iscrpnim pretraživanjem kombinacija grubom silom.
 
-Problem koji će se obrađivati u ovom radu podskup je problema, potrebno je generirati raspored laboratorijskih vježbi za 831 studenta u 37 grupa laboratorijskih vježbi bez preklapanja u njihovim rasporedima.
+Problem koji će se obrađivati u ovom radu podskup je tog problema, potrebno je generirati raspored laboratorijskih vježbi za 831 studenta u 37 grupa laboratorijskih vježbi bez preklapanja u njihovim rasporedima.
 
 Cilj ovog rada je opisati rad metaheuristika, konkretno generacijskog genetskog algoritma koji pretražuje prostor stanja simuliranjem procesa evolucije. Potrebno je pomoću eksperimentalnih rezultata pronaći najbolju konfiguraciju algoritma koji će u konačnosti generirati kvalitetan raspored iskoristiv za neometano izvođenje nastave.
 
 \chapter{Problem raspoređivanja studenata u grupe}
 
-U obrazovnim institucijama, dva najčešća problema slaganja rasporeda su dodjela grupa studentima i dodjela termina ispita. Raspored se smatra poželjnim ako profesor nema istovremeno dva predavanja, dva predmeta se istovremeno ne drže u istoj učionici, studenti nemaju više predavanja istovremeno i zadovoljena su sva stroga i što više blagih ograničenja \citep{ganguli2017study}.
+U obrazovnim institucijama dva najčešća problema slaganja rasporeda su dodjela grupa studentima i dodjela termina ispita. Raspored se smatra poželjnim ako profesor nema istovremeno dva predavanja, dva predmeta se istovremeno ne drže u istoj učionici, studenti nemaju više predavanja istovremeno i zadovoljena su sva stroga i što više blagih ograničenja \citep{ganguli2017study}.
 
 Za većinu problema raspoređivanja pokazano je da su NP-teški\footnote{Ne postoji algoritam u polinomijalnom vremenu.} i da ne mogu biti riješeni u polinomnom vremenu koristeći deterministički algoritam. To vrijedi zbog kombinatorne eksplozije do koje dolazi zbog velikog broja, ograničenja, zahtjeva i velikog broja studenata, predmeta, nastavnika i slično.
 
@@ -61,7 +61,7 @@ Blaga ograničenja su ona koja se smatraju poželjnima, npr: jutarnji termini, �
 Evolucijski algoritmi inspirirani su Darwinovom teorijom o postanku vrsta koja se temelji na 5 pretpostavka:
 
 \begin{enumerate}
-	\item potomka uvijek ima više nego je potrebno
+	\item potomaka uvijek ima više nego je potrebno
 	\item veličina populacije je prillbižno stalna
 	\item količina hrane je ograničena
 	\item kod vrsta koje se seksualno razmnožavaju, nema identičnih jedinki već postoje varijacije
@@ -135,7 +135,7 @@ Slijedi prikaz termina studenata. Moguće je da se u tablici zauzetosti studenat
 \begin{figure}[htb]
 \centering
 \includegraphics[width=15cm]{images/prikaz_termina.png}
-\caption{Prikaz zapisa nastavnih obveza studenta u memoriji.}
+\caption{Prikaz zapisa nastavnih obveza studenata u memoriji.}
 \label{fig:prikaz_termina}
 \end{figure}
 
@@ -154,7 +154,7 @@ Prvi način zapisa je niz termina gdje svaki element tog niza sadrži vektor sa 
 \label{fig:prikaz_jednike_1}
 \end{figure}
 
-Prednosti ovog zapisa su lakši ispis podataka, jer svaki termin odmah sadrži popis studenata i jednostavnija provjera zauzetog kapaciteta nekog termina. Prednosti je vrlo malo, dok mana ima puno više.
+Prednosti ovog zapisa su lakši ispis podataka jer svaki termin odmah sadrži popis studenata i jednostavnija provjera zauzetog kapaciteta nekog termina. Prednosti je vrlo malo, dok mana ima puno više.
 
 Neki od nedostataka su da je potrebno paziti da je svaki student dodijeljen samo jednom terminu, teže je implementirati operatore mutacije i operator križanja jer jedinka ima dvije osi od kojih je jedna varijabla. Također je zbog toga otežan izračun preklapanja. Dodatno, ovaj prikaz je i memorijski i vremenski zahtjevan zbog korištenja dodatnih struktura podataka.
 
@@ -272,14 +272,14 @@ Najvažnije svojstvo rasporeda je da ima minimalni broj preklapanja, zato se umn
 
 Kao što je spomenuto u poglavlju \ref{sec:kombinacija}, zbog nekih poželjnih svojstava rasporedu se može dodijeliti nagrada. Nagrada je implementirana tako da ukupnu kaznu rasporeda smanji za neku brojčanu konstantu. Manje konstante osiguravaju, pogotovo ako je implementirano više nagrada, da se ne preferiraju rasporedi s više nagrada i manje prekršenih ograničenja. 
 
-Jedno od tih svojstva je slijedno održavanje termina. Sljednost se provjerava samo ako se navedeni termin ne preklapa s niti jednim ostalim terminom. Za provjeru sljednosti može se koristiti formula \ref{eq:preklapanje}, ali tako da se znak nejednakosti promijeni u znak jednakosti.
+Jedno od tih svojstva je slijedno održavanje termina. Slijednost se provjerava samo ako se navedeni termin ne preklapa s niti jednim ostalim terminom. Za provjeru slijednosti može se koristiti formula \ref{eq:preklapanje}, ali tako da se znak nejednakosti promijeni u znak jednakosti.
 
 \begin{equation}
 max(t1, T1) - min(t0, T0) = (t1 - t0) + (T1  - T0)
 \label{eq:slijednost-long}
 \end{equation}
 
-Ali, zbog toga što provjera sljednosti ponovo uspoređuje dobiveni termin sa svim ostalim terminima, poželjno je, ako je moguće, ubrzati provjeru. Zato se za provjeru preklapanja dvaju termina koristi sljedeća formula:
+Ali, zbog toga što provjera slijednosti ponovo uspoređuje dobiveni termin sa svim ostalim terminima, poželjno je, ako je moguće, ubrzati provjeru. Zato se za provjeru preklapanja dvaju termina koristi sljedeća formula:
 
 \begin{equation}
 t0 = T1 \lor T0 = t1
@@ -311,7 +311,7 @@ Koeficijent služi za podešavanje doprinosa kazne. Prema pretpostavci bolji je 
 
 Temeljeno na prvoj pretpostavci izračuna ocjene rasporeda, studenti preferiraju termine laboratorijskih vježbi u istom danu kada imaju neku drugu nastavnu aktivnost, stoga ako student nema drugih nastavnih aktivnosti u danu održavanja laboratorijskih vježbi, dodjeljuje se kazna relativno velikog iznosa.
 
-Provjera ima li student neke druge nastavne aktivnosti tog dana održava se na samom početku prije provjera preklapanja, sljednosti termina i pauze s najmanjim vremenskim razmakom. Ako je ta provjera istinita, onda se ostala svojstva ne provjeravaju.
+Provjera ima li student neke druge nastavne aktivnosti tog dana održava se na samom početku prije provjera preklapanja, slijednosti termina i pauze s najmanjim vremenskim razmakom. Ako je ta provjera istinita, onda se ostala svojstva ne provjeravaju.
 
 \section{Elitizam}
 
@@ -341,7 +341,7 @@ Prilikom izrade rasporeda, očuvanje elitnog rasporeda je pokazalo dobra svojstv
 
 \section{Odabir roditelja}
 
-Kod odabira roditelja važno je da oba roditelja budu različita kako bi se održala raznolikost rasporeda. Kada bi oba odabrana roditelja bila jednaka, raspored nastao operatorom križanja bi bio jednak roditeljima, a to nije poželjno svojstvo genetskog algoritma.
+Kod odabira roditelja važno je da oba roditelja budu različita kako bi se održala raznolikost rasporeda. Kada bi oba odabrana roditelja bila jednaka, raspored nastao operatorom križanja bio bi jednak roditeljima, a to nije poželjno svojstvo genetskog algoritma.
 
 Operator odabira roditelja sužava prostor pretrage riješenja jer temeljem različitih algoritama roditelji koji imaju bolju ocjenu vrjerojatnije će biti odabrani. Primjer tih operatora su \emph{Proporcionalna selekcija} \engl{Roulette-Wheel Selection} i \emph{K-turnirska selekcija} \engl{K-torunament Selection}.
 
@@ -377,7 +377,7 @@ Osnovna izvedba algoritma izgleda ovako:
 \end{algorithmic}
 \end{algorithm}
 
-Proporcionalni odabir tradicionalno je implementiran tako da svaki element podijelimo sa sumom elemenata, te će tako element s najvećom vrijednošću imati najveću šansu odabira, no kako je sada bolji onaj raspored koji ima manju kaznu, potrebno je ipak podatke transformirati.
+Proporcionalni odabir tradicionalno je implementiran tako da svaki element podijelimo sa sumom elemenata te će tako element s najvećom vrijednošću imati najveću šansu odabira, no kako je sada bolji onaj raspored koji ima manju kaznu, potrebno je ipak podatke transformirati.
 
 Transformirane vrijednosti dobiju se tako da se nad svakim elementom provede transformacija:
 
@@ -456,9 +456,9 @@ Nasumičnim križanjem, za svaki element iz rasporeda postoji 50\% šanse da bud
 \label{fig:rand_cross}
 \end{figure}
 
-\subsection{Alternirajuće k-križanje}
+\subsection{Alternirajuće križanje}
 
-Različito od nasumičnog križanja, ovdje je slučajnost pristupna samo jednom, za odabir roditelja od kojeg počinje križanje. Nadalje, ovisno o parametru \emph{k} koji je predan algoritmu, djetetu se postavlja idućih \emph{k} vrijednosti odabranog roditelja te se potom roditelj mijenja.
+Različito od nasumičnog križanja, ovdje je slučajnost pristupna samo jednom, za odabir roditelja od kojeg počinje križanje. Nadalje, ovisno o parametru \emph{k} koji je predan algoritmu, djetetu se postavlja idućih \emph{k} vrijednosti odabranog roditelja te se potom roditelj mijenja i od njega se uzima idućih \emph{k} vrijednosti i tako sve dok se ne popune svi elementi dijeteta.
 
 \begin{figure}[htb]
 \centering
@@ -504,7 +504,7 @@ Jedna od varijanti mutacije je promjena termina za fiksan broj mjesta. Na primje
 \begin{figure}[htb]
 \centering
 \includegraphics[width=15cm]{images/mut_3.png}
-\caption{Mutacija uvečanjem termin za fiskan broj K = 3.}
+\caption{Mutacija uvećanjem termina za fiskan broj K = 3.}
 \label{fig:mut_3}
 \end{figure}
 
@@ -514,6 +514,8 @@ Ovako definiran operator kasnije u ciklusu pretrage, kad se raspored stabilizira
 \forall i\ termin[i] = (termin[i] + N)\mod brojTermina
 \label{eq:trans-kazne}
 \end{equation}
+
+Kao što se vidi na slici \ref{fig:mut_3}, 2.\ i 7.\ termin se povećavaju sa 6 na 9 i 10.\ sa 12 na 2 zbog utjecaja operatora \emph{mod}.
 
 \subsection{Nasumičan odabir termina}
 
@@ -595,7 +597,7 @@ Vrijednost kazne od 95 konzistentno pokazuje najbolja svojstva te je upravo iz t
 
 Nadalje slijedi ispitivanje o brzini minimizacije preklapanja ovisno o kazni.  Prilikom ispitivanja broj iteracija je postavljen na 100.
 
-Iz grafova je moguće primijetiti kako kazna preklapanja nema veliks utjecaj na algoritam, zbog turnirske selekcije dominira odabir rasporeda s manjim brojem preklapanja.
+Iz grafova je moguće primijetiti kako kazna preklapanja nema velik utjecaj na algoritam, zbog turnirske selekcije dominira odabir rasporeda s manjim brojem preklapanja.
 
 \begin{figure}
     \centering
@@ -726,7 +728,7 @@ proporcionalna selekcija & proporcionalna selekcija (poboljšana) &  turirska se
 
 Vrijeme izvođenja poboljšane verzije proporcionalne selekcije je veće kao što je očekivano, ali operator turnirske selekcije, iako je sporiji od ostalih, pruža puno bolje rezultate zbog čega se i dalje smatra najboljim operatorom za ovaj zadatak.
 
-Nadalje, s većom stopom mutacije, vrijeme izvođenja algoritma će se povečati jer je potrebno generirati i primijeniti više vrijednosti, no to nije fokus, već brzina konvergencije ovisno o stopi mutacije. Sa stopom mutacije nula, nakon svega nekoliko iteracija učenje prestaje, sa stopom iteracije oko 1\% učenje uspori, ali ne prestaje, a sa stopom oko 0.2\% učenje je najbrže.
+Nadalje, s većom stopom mutacije, vrijeme izvođenja algoritma će se povećati jer je potrebno generirati i primijeniti više vrijednosti, no to nije fokus, već brzina konvergencije ovisno o stopi mutacije. Sa stopom mutacije nula, nakon svega nekoliko iteracija učenje prestaje, sa stopom iteracije oko 1\% učenje uspori, ali ne prestaje, a sa stopom oko 0.2\% učenje je najbrže.
 
 \newpage
 
@@ -758,7 +760,7 @@ Uspoređuje se pronalazak rasporeda s kaznom 20000, 1000 i 7500 s populacijom 15
 \begin{tabular}{llll} \hline
 populacija/kazna & 20000 &  10000 & 7500\\ \hline
 15 & 5.81 & 13.74 & 19.22\\
-25 & 8.14 & 10.01 & 15.6794\\
+25 & 8.14 & 10.01 & 15.68\\
 50 & 7.69 & 15.52 & 24.39\\
 150 & 13.76 & 25.09 & 40.63\\ \hline
 \end{tabular}
@@ -779,7 +781,7 @@ Nakon 10000 iteracija algoritam je pronašao raspored bez preklapanja i s potreb
 
 U sklopu ovog rada predstavljen je problem izrade raspodjele studenata u nastavne i ispitne grupe te niz prepreka i ograničenja koja postoje prilikom izrade rasporeda. Problem se svodi na pametnu pretragu velikog prostora stanja.
 
-Jedna od metoda pretrage rješenja je primjena mateheursitke, točnije generacijskog genetskog algoritama gdje se modeliranjem biološkog procesa evolucije simulira proces opstanka najjačih i izumiranja najslabijih jedinki.
+Jedna od metoda pretrage rješenja je primjena metaheuristike, točnije generacijskog genetskog algoritama gdje se modeliranjem biološkog procesa evolucije simulira proces opstanka najjačih i izumiranja najslabijih jedinki.
 
 Opisan je rad algoritma kao i svih njegovih dijelova. Predložen je prikaz rasporeda u memoriji kao niz studenata s dodijeljenim terminom, takva reprezentacija pruža jednostavan i efikasan zapis. Umjesto izračuna dobrote, predložena je uporaba kazne.
 
@@ -795,7 +797,7 @@ Kao krajnji rezultat ovog rada definirana je konfiguracija algoritma koja u kona
 \bibliographystyle{fer}
 
 \begin{sazetak}
-Genetski algoritmi su primjenjivi na širok spektar problema, a izrada rasporeda sati jedan je od konkretnih i primjenjivih problema. U sklopu ovog rada opisan je rad generacijskog genetsko algoritma s mogućim rješenjima raznih operatora potrebnih za rad algoritma. Uspoređeni su utjecaji različitih konfiguracija i rezultata dobivenih iz provedenih eksperimenata kako bi se ispitala kvaliteta generiranih rasporeda. Usporedbom rezultata odabrana je konfiguracija koja je predložena kao konačno rješenje problema.
+Genetski algoritmi su primjenjivi na širok spektar problema, a izrada rasporeda sati jedan je od konkretnih i primjenjivih problema. U sklopu ovog rada opisan je rad generacijskog genetskog algoritma s mogućim rješenjima raznih operatora potrebnih za rad algoritma. Uspoređeni su utjecaji različitih konfiguracija i rezultata dobivenih iz provedenih eksperimenata kako bi se ispitala kvaliteta generiranih rasporeda. Usporedbom rezultata odabrana je konfiguracija koja je predložena kao konačno rješenje problema.
 
 \kljucnerijeci{Operatori, generacijski, eksperimenti, kvaliteta, konfiguracija.}
 \end{sazetak}
