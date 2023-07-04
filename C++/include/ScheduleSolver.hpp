@@ -41,8 +41,12 @@ private:
 
     void loadAppointments();
 
+    void loadOccupations();
+
 public:
-    [[noreturn]] void train();
+    void train();
+
+    void train(long);
 
 private:
     void generateRandomPopulations();
@@ -51,13 +55,15 @@ private:
 
     void assignNewPopulation(int **, int *, int *);
 
-    std::tuple<int, int> calculatePenalties(int *);
+    std::tuple<int, int> calculatePenalties(const int *);
 
     void mutate(int *) const;
 
     void printSchedule();
 
     void printScheduleRich();
+
+    void exportIterationData();
 };
 
 #endif

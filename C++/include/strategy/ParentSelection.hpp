@@ -5,7 +5,7 @@ class ParentSelection {
 public:
     virtual ~ParentSelection() = default;
 
-    virtual int select(int *, int, int, int *) = 0;
+    virtual int select(int *, int, int *) = 0;
 };
 
 #endif

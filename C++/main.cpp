@@ -1,4 +1,5 @@
-#include <list>
+#include <iostream>
+#include <chrono>
 
 #include "include/ScheduleSolver.hpp"
 #include "include/strategy/ParentSelection.hpp"
@@ -18,5 +19,11 @@ int main() {
     double mutation = 0.001;
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
+
+    auto start = chrono::high_resolution_clock::now();
     model.train();
+    auto end = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> duration = end - start;
+    cout << "Treniranje je trajalo: " << duration.count() << " sekundi.\n";
 }
