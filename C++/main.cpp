@@ -10,12 +10,12 @@ using namespace std;
 
 int main() {
     // strategy setup
-    ParentSelection *parentSelection = new KTournament(2);
+    ParentSelection *parentSelection = new KTournament(3);
     UnitCrossing *unitCrossing = new RandomCross();
 
     // parameters
-    int numOfUnits = 25;
-    double mutation = 0.003;
+    int numOfUnits = 15;
+    double mutation = 0.001;
 
     ScheduleSolver model(parentSelection, unitCrossing, numOfUnits, mutation);
     model.train();
