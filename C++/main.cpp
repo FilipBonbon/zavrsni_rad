@@ -1,6 +1,3 @@
-#include <iostream>
-#include <chrono>
-
 #include "include/ScheduleSolver.hpp"
 #include "include/strategy/ParentSelection.hpp"
 #include "include/strategy/parents/KTournament.hpp"

@@ -4,6 +4,7 @@
 #include <random>
 #include <chrono>
 #include <cmath>
+#include <iomanip>
 
 #include "../include/util/DataLoader.hpp"
 #include "../include/ScheduleSolver.hpp"
@@ -89,7 +90,7 @@ void ScheduleSolver::loadOccupations() {
 }
 
 void ScheduleSolver::train() {
-    train(INT64_MAX);
+    train(INT32_MAX);
 }
 
 void ScheduleSolver::train(long max_iterations) {
